@@ -4,6 +4,7 @@ import sys
 
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'matplotlib'])
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'plotly'])
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'numpy'])
 
 reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])
 installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
