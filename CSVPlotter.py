@@ -133,12 +133,13 @@ Path(savePath + "/statresults").mkdir(parents=True, exist_ok=True)
 fig.write_html(savePath + "/statresults/statistika.html")
 
 plt.figure()
-for i in polePrumeruVsechFilu:
-    plt.plot(poleIndexuGlobal, i)
-    plt.yscale('log')
-    plt.title('prumery ' + folder_path)
-    plt.legend(['BC', 'C1', 'C3', 'C2', 'H1', 'H3', 'H2', 'Lun', 'Ros', 'RotSch'])
-    plt.savefig(savePath + '/imgresults/prumery/prumeryJedneDimenze')
+if len(polePrumeruVsechFilu) > 1:
+    for i in polePrumeruVsechFilu:
+        plt.plot(poleIndexuGlobal, i)
+        plt.yscale('log')
+        plt.title('prumery ' + folder_path)
+        plt.legend(['BC', 'C1', 'C3', 'C2', 'H1', 'H3', 'H2', 'Lun', 'Ros', 'RotSch'])
+        plt.savefig(savePath + '/imgresults/prumery/prumeryJedneDimenze')
 
 plt.close()
 
