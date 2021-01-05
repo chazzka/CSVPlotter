@@ -1,14 +1,17 @@
+import glob
+import os
 import subprocess
-
 import sys
 
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'matplotlib'])
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'plotly'])
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'numpy'])
+print("installing requirements...")
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'matplotlib'], stdout=open(os.devnull, 'wb'))
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'plotly'], stdout=open(os.devnull, 'wb'))
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'numpy==1.19.3'], stdout=open(os.devnull, 'wb'))
 
 reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])
 installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
 
+print("installed packages: ")
 print(installed_packages)
 
 import csv
@@ -16,7 +19,6 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import numpy as np
 
-import os, glob
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
 from pathlib import Path
@@ -34,6 +36,9 @@ nazvy_funkci = []
 
 polePrumeruVsechFilu = []
 poleIndexuGlobal = []
+
+# todo: tady tkinter, volba pro grafy dohromady - je potřeba dat pole průměrů dohromady
+
 
 # start - make user select folders
 Tk().withdraw()
