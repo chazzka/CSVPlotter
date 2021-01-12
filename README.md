@@ -31,6 +31,7 @@ cesta ke složce která obsahuje:
 └── JDE20D
     └── csvčka            
 ```
+pro vstup vyber jednu ze složek! (10D nebo 20D)
 
 ### Spuštění:
 python CSVPlotter.py
