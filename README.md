@@ -19,3 +19,11 @@ cesta ke složce která obsahuje:
 
 ### Spuštění:
 python CSVPlotter.py
+
+Patrik:
+```
+  ▲__
+ [ ]
+ -|-
+ | |
+ ```
