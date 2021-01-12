@@ -16,6 +16,21 @@ cesta ke složce která obsahuje:
 2. složku CSV výstupy z testbedu pro zvolený počet dimenzí (například 10D) druhého algoritmu
 3. ...
 
+```
+10D
+└── SOMA10D
+    └── csvčka
+└── JDE10D
+    └── csvčka  
+```
+
+```
+20D
+└── SOMA20D
+    └── csvčka
+└── JDE20D
+    └── csvčka            
+```
 
 ### Spuštění:
 python CSVPlotter.py
