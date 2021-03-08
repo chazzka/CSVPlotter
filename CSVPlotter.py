@@ -4,7 +4,7 @@ import subprocess
 import sys
 
 print("installing requirements...")
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'matplotlib'], stdout=open(os.devnull, 'wb'))
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'matplotlib==3.3.1'], stdout=open(os.devnull, 'wb'))
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'plotly'], stdout=open(os.devnull, 'wb'))
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'numpy==1.19.3'], stdout=open(os.devnull, 'wb'))
 
