@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 
+
 print("installing requirements...")
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'matplotlib==3.3.1'], stdout=open(os.devnull, 'wb'))
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'plotly'], stdout=open(os.devnull, 'wb'))
@@ -97,6 +98,8 @@ def jednicka():
         for i in poleHodnotSloupcu:
             plt.plot(poleIndexu, i)
             plt.yscale('log')
+            plt.xlabel('FES')
+            plt.ylabel('Cost')
             plt.title(name_of_file)
             plt.savefig(savePath + '/imgresults/' + name_of_file)
             poleVysledku.append(i)
@@ -117,6 +120,8 @@ def jednicka():
         # toto je jedno csv:
         plt.figure()
         plt.plot(poleIndexu, polePrumeru)
+        plt.xlabel('FES')
+        plt.ylabel('Cost')
         plt.yscale('log')
         plt.title(name_of_file + 'prumer')
         plt.savefig(savePath + '/imgresults/prumery/' + name_of_file)
@@ -135,6 +140,8 @@ def jednicka():
     if len(polePrumeruVsechFilu) > 1:
         for i in polePrumeruVsechFilu:
             plt.plot(poleIndexuGlobal, i)
+            plt.xlabel('FES')
+            plt.ylabel('Cost')
             plt.yscale('log')
             plt.title('prumery ' + name_of_file)
             plt.legend(['BC', 'C1', 'C3', 'C2', 'H1', 'H3', 'H2', 'Lun', 'Ros', 'RotSch'])
@@ -152,11 +159,12 @@ def dvojka():
     save_path = askdirectory(title='Vyber kam se ulozi vysledky')
 
     single_dimension_folders = []
-
+    algnames = []
     for subdir, dirs, files in os.walk(open_path):
         for s in dirs:
             # složky s csvečky
             first = s
+            algnames.append(first)
             second = os.path.join(subdir)
             glue = second + "/" + first
             single_dimension_folders.append(glue)
@@ -243,7 +251,9 @@ def dvojka():
             x_osa = np.dot(vypocet_array, konstanta)
             plt.plot(x_osa, dvojicka[1])
             # plt.yscale('log')
-            plt.legend(['JDE', 'SOMA'])
+            plt.legend(algnames)
+            plt.xlabel('FES')
+            plt.ylabel('Cost')
             plt.title(hotove_nazvy[iterator])
             plt.savefig(save_path + '/imgresults/combine/' + hotove_nazvy[iterator])
             iterator += 1
