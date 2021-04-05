@@ -77,7 +77,7 @@ def jednicka():
             radekPrumeru.pop()
             tempRadek = np.array(radekPrumeru)
             ciselnyTempRadek = tempRadek.astype(np.float)
-            polePrumeru.append(sum(ciselnyTempRadek) / len(ciselnyTempRadek))
+            polePrumeru.append(min(ciselnyTempRadek))
 
         polePrumeruVsechFilu.append(polePrumeru)
         pocetSloupcu = len(poleCSV[0])
@@ -143,7 +143,7 @@ def jednicka():
             plt.xlabel('FES')
             plt.ylabel('Cost')
             plt.yscale('log')
-            plt.title('prumery ' + name_of_file)
+            plt.title('prumery kombinace')
             plt.legend(['BC', 'C1', 'C3', 'C2', 'H1', 'H3', 'H2', 'Lun', 'Ros', 'RotSch'])
             plt.savefig(savePath + '/imgresults/prumery/prumeryJedneDimenze')
 
@@ -157,7 +157,11 @@ def dvojka():
     Tk().withdraw()
     open_path = askdirectory(title='Vyber slozky se stejnymi dimenzemi')
     save_path = askdirectory(title='Vyber kam se ulozi vysledky')
-
+    #for testing
+    #open_path = "C:/Users/admin/Documents/csv/10D"
+    #save_path = "C:/Users/admin/Documents/grafy3"
+    
+    
     single_dimension_folders = []
     algnames = []
     for subdir, dirs, files in os.walk(open_path):
@@ -180,8 +184,13 @@ def dvojka():
                 spamreader = csv.reader(csvfile, delimiter=';')
                 csv_as_array = []
                 pole_nazvu.append(filename.split('\\')[1].split('.')[0])
+                # NEAPENDUJ PRVNICH 100
+                for i in range(0,100):
+                    next(spamreader, None)
+
                 for radek in spamreader:
                     csv_as_array.append(radek)
+                        
 
                 polePrumeru = []
                 for radek in csv_as_array:
@@ -190,41 +199,17 @@ def dvojka():
                     radek_prumeru.pop()
                     temp = np.array(radek_prumeru)
                     ciselny = temp.astype(np.float)
-                    polePrumeru.append(sum(ciselny) / len(ciselny))
+                    polePrumeru.append(min(ciselny))
                 prumery_jedne_slozky.append(polePrumeru)
         prumery_vsech_algoritmu.append(prumery_jedne_slozky)
         pole_nazvu_ke_slouceni.append(pole_nazvu)
 
     hotove_nazvy = []
-    iterator = 0
-    temp = ""
-    temp_pole = []
-
-    ukonceni = 0
-    for ko in pole_nazvu_ke_slouceni:
-        ukonceni += len(ko)
-
-    pocetIteraci = 0
-    restart = True
-    while restart:
-        restart = False
-        for ite in range(0, len(pole_nazvu_ke_slouceni)):
-
-            if pocetIteraci == ukonceni:
-                restart = False
-                break
-
-            temp_pole.append(pole_nazvu_ke_slouceni[ite][iterator])
-
-            if ite == len(pole_nazvu_ke_slouceni) - 1:
-                iterator += 1
-                for jj in range(0, len(temp_pole) - 1):
-                    hotove_nazvy.append(temp_pole[jj] + temp_pole[jj + 1]) # string concat
-                    pocetIteraci += 2
-                temp_pole = []
-                restart = True
-                break
-
+    #udelej si pole nazvu, pomuze ti jmenna konvence csveček
+    if len(pole_nazvu_ke_slouceni) > 0:
+        for nazev in pole_nazvu_ke_slouceni[0]:
+            hotove_nazvy.append(nazev.split("_")[1])
+    
     # data ready, ted grafy
     # zjisti který je největší
     best_len = 0
@@ -232,33 +217,26 @@ def dvojka():
         if len(slozka_s_algoritmem[0]) > best_len:
             best_len = len(slozka_s_algoritmem[0])
 
-    res = zip(prumery_vsech_algoritmu[0], prumery_vsech_algoritmu[1])
+    res = zip(*prumery_vsech_algoritmu)
     res = tuple(res)
-
+    print(hotove_nazvy)
     Path(save_path + "/imgresults/combine").mkdir(parents=True, exist_ok=True)
     plt.figure()
     if len(prumery_vsech_algoritmu) > 1:
         iterator = 0
         for dvojicka in res:
-            # jedna čara
-            vypocet_array = np.array(range(0, len(dvojicka[0])))
-            konstanta = best_len / len(dvojicka[0])
-            x_osa = np.dot(vypocet_array, konstanta)
-            plt.plot(x_osa, dvojicka[0])
-            # druhá čára
-            vypocet_array = np.array(range(0, len(dvojicka[1])))
-            konstanta = best_len / len(dvojicka[1])
-            x_osa = np.dot(vypocet_array, konstanta)
-            plt.plot(x_osa, dvojicka[1])
-            # plt.yscale('log')
+            for n in range(0,len(prumery_vsech_algoritmu)):
+                vypocet_array = np.array(range(0, len(dvojicka[n])))
+                konstanta = best_len / len(dvojicka[n])
+                x_osa = np.dot(vypocet_array, konstanta)
+                plt.plot(x_osa, dvojicka[n])
             plt.legend(algnames)
             plt.xlabel('FES')
-            plt.ylabel('Cost')
+            plt.ylabel('minCost')
             plt.title(hotove_nazvy[iterator])
             plt.savefig(save_path + '/imgresults/combine/' + hotove_nazvy[iterator])
             iterator += 1
             plt.close()
-
 
 root = Tk()
 i = IntVar()
